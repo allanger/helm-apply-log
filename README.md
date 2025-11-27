@@ -1,6 +1,6 @@
 # Helm apply log
 
-This plugin can be used as a post renderrer to append a `ConfigMap` with some information about the release.
+This plugin can be used as a post renderer to append a `ConfigMap` with some information about the release.
 It contains the following data:
 
 - Author
