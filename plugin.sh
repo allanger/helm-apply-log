@@ -10,6 +10,14 @@ else
   GIT_REMOTE_URL="Not inside a git repo"
 fi
 
+HELM_VERSION="$(helm version --short)"
+
+HELMFILE_VERSION="Helmfile not detected"
+
+if ! [ -z "$(command -v helmfile)" ]; then
+  HELMFILE_VERSION="$(helmfile version -o=short)"
+fi
+
 RELEASE_NAME="${1}"
 
 if [ -z "${CI}" ]; then
@@ -20,9 +28,11 @@ if [ -z "${CI}" ]; then
     "${RELEASE_NAME}-apply-log" -o yaml \
       --from-literal author="${USER}" \
       --from-literal branch="${BRANCH}" \
-      --from-literal sha="${SHA}" \
-      --from-literal status="${STATUS}" \
-      --from-literal remote_url="${GIT_REMOTE_URL}" \
+      --from-literal git_sha="${SHA}" \
+      --from-literal git_status="${STATUS}" \
+      --from-literal git_remote_url="${GIT_REMOTE_URL}" \
+      --from-literal helm_version="${HELM_VERSION}" \
+      --from-literal helmfile_version="${HELMFILE_VERSION}" \
     | yq 'del(.metadata.creationTimestamp)'
 else
   # -- Detect a CI url
@@ -36,7 +46,9 @@ else
     "${RELEASE_NAME}-apply-log" -o yaml \
       --from-literal author="${USER}" \
       --from-literal ci="true" \
-      --from-literal remote_url="${GIT_REMOTE_URL}" \
-      --from-literal ci_url="${CI_URL}" \
+      --from-literal git_remote_url="${GIT_REMOTE_URL}" \
+      --from-literal git_ci_url="${CI_URL}" \
+      --from-literal helm_version="${HELM_VERSION}" \
+      --from-literal helmfile_version="${HELMFILE_VERSION}" \
     | yq 'del(.metadata.creationTimestamp)'
 fi
