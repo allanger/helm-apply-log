@@ -18,6 +18,7 @@ if ! [ -z "$(command -v helmfile)" ]; then
   HELMFILE_VERSION="$(helmfile version -o=short)"
 fi
 
+HELM_USER="${HELM_USER:-$USER}"
 RELEASE_NAME="${1}"
 
 if [ -z "${CI}" ]; then
@@ -26,7 +27,7 @@ if [ -z "${CI}" ]; then
   STATUS=$(test -z `git status --porcelain` && echo clean || echo dirty)
   kubectl create configmap --dry-run=client \
     "${RELEASE_NAME}-apply-log" -o yaml \
-      --from-literal author="${USER}" \
+      --from-literal author="${HELM_USER}" \
       --from-literal branch="${BRANCH}" \
       --from-literal git_sha="${SHA}" \
       --from-literal git_status="${STATUS}" \
@@ -44,7 +45,7 @@ else
   fi
   kubectl create configmap --dry-run=client \
     "${RELEASE_NAME}-apply-log" -o yaml \
-      --from-literal author="${USER}" \
+      --from-literal author="${HELM_USER}" \
       --from-literal ci="true" \
       --from-literal git_remote_url="${GIT_REMOTE_URL}" \
       --from-literal git_ci_url="${CI_URL}" \
