@@ -13,7 +13,7 @@ It contains the following data:
 
 Execute the following command:
 ```shell
-# -- For the version v0.1.0
-$ export VERSION=v0.1.0
+# -- For the version v0.3.0
+$ export VERSION=v0.3.0
 $ helm plugin install "https://github.com/ONPIER-OSS/helm-apply-log/archive/refs/tags/${VERSION}.tar.gz"
 ```

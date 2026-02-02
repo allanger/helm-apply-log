@@ -1,19 +1,8 @@
 apiVersion: v1
 type: postrenderer/v1
 name: apply-log
-
 runtime: subprocess
-version: 0.1.0
-
-usage: Just use it as a postrenderer plugin
-description: |
-  It adds a configmap to each release, which contains fields like
-    - author (the username of the one who's applying)
-    - sha (git sha)
-    - branch (git branch)
-    - status (it's dirty, if there are uncommitted changes, otherwise - clean)
-    - ci (when CI env var is set)
-ignoreFlags: false
+version: 0.3.0
 runtimeConfig:
   platformCommand:
     - command: "$HELM_PLUGIN_DIR/plugin.sh"
